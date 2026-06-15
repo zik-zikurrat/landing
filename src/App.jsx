@@ -56,14 +56,13 @@ const LANG_COLOR = {
 };
 
 const BOOT_LINES = [
-  "[ 0.000000] zik-zikurrat.dev — booting…",
+  "[ 0.000000] zik-zikurrat.dev - booting…",
   "[ 0.000412] cpu: backend engineer / go · rust · c/c++",
   "[ 0.001120] loc: almaty, kz",
   "[ 0.002340] loading services…",
   "[ 0.004511] trainers-manager …… ok",
-  "[ 0.005903] kv-store ……………… ok",
-  "[ 0.007288] c-structures ………… idle",
-  "[ 0.008601] esp32-lab …………… idle",
+  "[ 0.005903] in-memory-db ……………… ok",
+  "[ 0.007288] basic-golang-structures ………… idle",
   "[ 0.010002] ready.",
 ];
 
