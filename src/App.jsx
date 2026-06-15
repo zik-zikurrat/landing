@@ -20,6 +20,7 @@ const PROJECTS = [
     id: "trainers-manager",
     name: "trainers-manager",
     lang: "Go",
+    healthUrl: "http://37.27.33.141/api/v1/health",
     status: "online",
     tagline: "LLM Workout Generator",
     concept: "Kafka-saga · Outbox · background generation via LLM with interleaving in code",
@@ -30,6 +31,7 @@ const PROJECTS = [
     id: "in-memory-db",
     name: "in-memory-db",
     lang: "Go",
+    healthUrl: null,
     status: "offline",
     tagline: "In-memory KV database with CLI and TCP-server",
     concept: "WAL with group commit · future/promise · recovery on start",
@@ -40,9 +42,10 @@ const PROJECTS = [
     id: "basic-golang-structures",
     name: "basic-golang-structures",
     lang: "C",
+    healthUrl: null,
     status: "offline",
     tagline: "Golang data structures on raw C",
-    concept: "Slice, HashTable, Mutes/RWMutex, Channel writing by myself on C",
+    concept: "Slice, HashTable, Mutex/RWMutex, Channel writing by myself on C",
     demo: null,
     source: "https://github.com/zik-zikurrat/basic-golang-structures",
   },
@@ -101,7 +104,12 @@ function BootSequence({ onDone }) {
 }
 
 function StatusDot({ status }) {
-  const color = status === "online" ? C.phosphor : C.muted;
+  const color =
+    status === "online" ? C.phosphor :
+      status === "checking" ? C.amber : C.muted;
+  const label =
+    status === "online" ? "online" :
+      status === "checking" ? "…" : "offline";
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
       <span style={{
@@ -110,7 +118,7 @@ function StatusDot({ status }) {
         animation: status === "online" ? "pulse 2s ease-in-out infinite" : "none",
       }} />
       <span style={{ fontSize: 11, color, textTransform: "uppercase", letterSpacing: 1 }}>
-        {status}
+        {label}
       </span>
     </span>
   );
@@ -118,8 +126,25 @@ function StatusDot({ status }) {
 
 function ProjectCard({ p }) {
   const [hover, setHover] = useState(false);
+  const [status, setStatus] = useState(p.healthUrl ? "checking" : "offline");
   const langColor = LANG_COLOR[p.lang] || C.phosphor;
+  useEffect(() => {
+    if (!p.healthUrl) return;
+    let alive = true;
 
+    const ping = async () => {
+      try {
+        await fetch(p.healthUrl, { mode: "no-cors" });
+        if (alive) setStatus("online");
+      } catch {
+        if (alive) setStatus("offline");
+      }
+    };
+
+    ping();
+    const t = setInterval(ping, 15000);
+    return () => { alive = false; clearInterval(t); };
+  }, [p.healthUrl]);
   return (
     <div
       onMouseEnter={() => setHover(true)}
@@ -139,7 +164,7 @@ function ProjectCard({ p }) {
           }}>{p.lang}</span>
           <span style={{ fontFamily: C.mono, fontSize: 15, color: C.text }}>{p.name}</span>
         </div>
-        <StatusDot status={p.status} />
+        <StatusDot status={status} />
       </div>
 
       <div>
@@ -255,7 +280,7 @@ export default function App() {
               // STACK
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {["Go", "Kafka", "PostgreSQL", "Redis", "gRPC", "Kubernetes", "Docker", "Rust", "C", "C++", "ESP32"].map((t) => (
+              {["Go", "Kafka", "PostgreSQL", "Redis", "gRPC", "Kubernetes", "Docker", "Rust", "C", "C++", "Arduino/ESP32/Raspberry Pi"].map((t) => (
                 <span key={t} style={{
                   fontSize: 12, fontFamily: C.mono, padding: "5px 11px",
                   background: C.panel, border: `1px solid ${C.border}`,
@@ -275,7 +300,6 @@ export default function App() {
                 <span style={{ color: C.phosphor }}>~/</span>projects
               </h2>
               <span style={{ fontSize: 12, color: C.muted }}>
-                {PROJECTS.filter((p) => p.status === "online").length} online ·{" "}
                 {PROJECTS.length} total
               </span>
             </div>
@@ -312,7 +336,7 @@ export default function App() {
               <a href="https://github.com/zik-zikurrat" style={{ color: C.phosphor, textDecoration: "none" }}>
                 <span style={{ color: C.muted }}>github  </span>github.com/zik-zikurrat
               </a>
-              <a href="https://t.me/zik-zikurrat" style={{ color: C.phosphor, textDecoration: "none" }}>
+              <a href="https://t.me/zpolev" style={{ color: C.phosphor, textDecoration: "none" }}>
                 <span style={{ color: C.muted }}>telegram</span> @zpolev
               </a>
               <a href="mailto:zakariyapolevchshikov@proton.me" style={{ color: C.phosphor, textDecoration: "none" }}>
