@@ -27,11 +27,11 @@ const PROJECTS = [
     id: "trainers-manager",
     name: "trainers-manager",
     lang: "Go",
-    healthUrl: "http://37.27.33.141/api/v1/health",
+    healthUrl: "https://trainers.zik-zikurrat.dev/api/v1/health",
     tagline: "LLM Workout Generator",
     concept: "Kafka-saga · Outbox · background generation via LLM with interleaving in code",
     stack: ["Kafka", "PostgreSQL", "Redis", "Outbox", "LLM"],
-    demo: "http://37.27.33.141",
+    demo: "https://trainers.zik-zikurrat.dev",
     source: "https://github.com/zik-zikurrat/trainers-manager",
   },
   {
