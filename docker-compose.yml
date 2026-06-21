@@ -4,10 +4,10 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./certs:/etc/nginx/certs:ro
-      - ./certbot-webroot:/var/www/certbot
     restart: unless-stopped
+    networks:
+      - web
+networks:
+  web:
+    external: true
+    name: trainers-manager_training_net
