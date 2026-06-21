@@ -1,0 +1,23 @@
+kind: pipeline
+type: docker
+name: deploy
+
+steps:
+  - name: deploy
+    image: appleboy/drone-ssh
+    settings:
+      host: 37.27.33.141
+      username: deploy
+      port: 22
+      key:
+        from_secret: ssh_key
+      script:
+        - cd ~/landing
+        - git pull origin master
+        - docker compose up -d --build landing
+
+trigger:
+  branch:
+    - main
+  event:
+    - push
