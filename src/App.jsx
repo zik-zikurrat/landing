@@ -72,7 +72,7 @@ const STACK = ["Go", "Kafka", "PostgreSQL", "Redis", "gRPC", "Kubernetes", "Dock
 
 const CONTACT = {
   github: "https://github.com/zik-zikurrat",
-  telegram: "https://t.me/zpolev",
+  telegram: "https://t.me/zik_zikurrat",
   email: "zakariyapolevchshikov@proton.me",
 };
 
@@ -826,7 +826,7 @@ export default function App() {
                   <span style={{ color: C.muted }}>github   </span>github.com/zik-zikurrat
                 </a>
                 <a href={CONTACT.telegram} target="_blank" rel="noopener noreferrer" style={contactLink}>
-                  <span style={{ color: C.muted }}>telegram </span>@zpolev
+                  <span style={{ color: C.muted }}>telegram </span>@zik_zikurrat
                 </a>
                 <a href={`mailto:${CONTACT.email}`} style={contactLink}>
                   <span style={{ color: C.muted }}>email    </span>{CONTACT.email}
